@@ -1,0 +1,21 @@
+<body>
+  <div class="container" id="tasksId">
+   <header>
+      <h1>Tasks List</h1>
+
+      {{> loginButtons}}
+
+     {{#if currentUser}} 
+        <form class="new-task">
+          <input type="text" name="text" placeholder="Type to add new tasks" />
+        </form>
+     {{/if}} 
+    </header>
+ 
+    <ul class="tasks-list">
+      {{#each tasks}}
+        {{> task}}
+      {{/each}}
+    </ul>
+  </div>
+</body>
