@@ -4,9 +4,13 @@ import { Random } from 'meteor/random';
 import { Tasks } from './tasks.js';
 
 if (Meteor.isServer) {
-    describe('tasks insert', function() {
+    describe('tasksInsert', function() {
+        afterEach(function() {
+            Tasks.remove({});
+        });  
+
         // here i am inserting the task and expecting the collection name and total records length
-        it('insert task', function() {
+        it('insertTask', function(done) {
             const taskId = Tasks.insert({
                 text: 'task1',
                 createdAt: new Date(), // current time
@@ -18,6 +22,7 @@ if (Meteor.isServer) {
 
             assert.equal(collectionName, 'tasks');
             assert.equal(count, 1);
+            done()
         });
     });
 }

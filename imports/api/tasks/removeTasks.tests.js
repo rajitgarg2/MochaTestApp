@@ -6,20 +6,24 @@ import { Tasks } from './tasks.js';
 import './methods.js';
 
 if (Meteor.isServer) {
-    describe('methods', () => {
-        const userId = Random.id();
-        let taskId;
+    describe('methods test', () => {
+        // describe('tasksRemove', function() {
+            const userId = Random.id();
+            let taskId;
 
-        beforeEach(() => {
-            Tasks.remove({});
-            taskId = Tasks.insert({
-                text: 'task2',
-                createdAt: new Date(), // current time
-                owner: userId
+            beforeEach(() => {
+                Tasks.remove({});
+                taskId = Tasks.insert({
+                    text: 'task2',
+                    createdAt: new Date(), // current time
+                    owner: userId
+                });
             });
-        });
 
-        describe('tasks.remove', function() {
+            afterEach(function() {
+                Tasks.remove({});
+            });
+
             // here i am removing the task using tasks.remove method and then ensures this by expecting the length of tasks collection.
             it('user can remove his own task', (done) => {
                 // Find the internal implementation of the task method so we can
@@ -33,7 +37,6 @@ if (Meteor.isServer) {
                 assert.equal(Tasks.find().count(), 0);
                 done();
             });
-        })
-
+        // })
     });
 }

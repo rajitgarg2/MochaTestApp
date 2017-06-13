@@ -8,11 +8,9 @@ import { withRenderedTemplate } from '../../test-helpers.js';
 import '../task.js';
 import '../body.js';
 
-describe('Tasks', function() {
+describe('TasksClientTesting', function() {
     const userId = Random.id();
     beforeEach(() => {
-        //we already have one task exists, due to insert from server side testcase, so after below insertion we have total 3 tasks.
-
         Tasks.insert({
             text: 'This is my First Task',
             createdAt: new Date(), // current time
@@ -26,12 +24,12 @@ describe('Tasks', function() {
         });
     });
 
-    it('Tasks listing test', function() {
+    it('Tasks listing test', function(done) {
         const data = {};
         // here i am testing for total no. of li created and their content
         withRenderedTemplate('body', data, (el) => {
             const renderedList = $(el).find('#tasksId ul li');
-            chai.assert.deepEqual(renderedList.length, 3);
+            chai.assert.deepEqual(renderedList.length, 2);
 
             const firstLi = renderedList[0];
             let firstLiText = $(firstLi).find('.text').text()
@@ -39,26 +37,23 @@ describe('Tasks', function() {
             const secondLi = renderedList[1];
             let secondLiText = $(secondLi).find('.text').text()
 
-            const thirdLi = renderedList[2];
-            let thirdLiText = $(thirdLi).find('.text').text()
-
-
             chai.assert.deepEqual(firstLiText, 'This is my Second Task');
             chai.assert.deepEqual(secondLiText, 'This is my First Task');
-            chai.assert.deepEqual(thirdLiText, 'task3');
         });
+        done()
     });
 
-    it('Remove task', function() {
+    it('Remove task', function(done) {
         const data = {};
-        // here we will get 5 tasks , because in this case also beforeEach runs and it will add 2 more tasks
+        // here we will get 4 tasks , because in this case also beforeEach runs and it will add 2 more tasks
         // here i am testing for total no. of li created and trying to remove one li
         withRenderedTemplate('body', data, (el) => {
             let renderedList = $(el).find('#tasksId ul li');
-            chai.assert.deepEqual(renderedList.length, 5);
+            chai.assert.deepEqual(renderedList.length, 4);
             const firstLi = renderedList[0];
             chai.assert.deepEqual($(firstLi).find('.delete').length, 0);
             // here we will not found button for remove which contain delete class because we are showing this button only to loggedin users, here we donot have any user, so we are getting 0 above
         });
+        done()
     });
 });
